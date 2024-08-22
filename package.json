@@ -1,6 +1,6 @@
 {
   "name": "megafuel-js-sdk",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "SDK for megafuel product",
   "repository": "https://github.com/node-real/megafuel-js-sdk",
   "license": "GPL-3.0-or-later",
@@ -10,8 +10,8 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "main": "./dist/tsc/main.js",
-  "types": "./dist/tsc/main.d.ts",
+  "main": "./dist/tsc/index.js",
+  "types": "./dist/tsc/index.d.ts",
   "scripts": {
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "test": "jest",
