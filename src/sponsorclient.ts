@@ -8,13 +8,13 @@ export enum WhiteListType {
 }
 
 export type WhiteListArgs = {
-  PolicyUUID: string
+  PolicyUuid: string
   WhitelistType: WhiteListType
   Values: string[]
 }
 
 export type GetWhiteListArgs = {
-  PolicyUUID: string
+  PolicyUuid: string
   WhitelistType: WhiteListType
   Offset: number
   Limit: number

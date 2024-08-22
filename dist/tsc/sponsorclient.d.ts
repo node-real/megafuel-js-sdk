@@ -6,12 +6,12 @@ export declare enum WhiteListType {
     BEP20ReceiverWhiteList = "BEP20ReceiverWhiteList"
 }
 export type WhiteListArgs = {
-    PolicyUUID: string;
+    PolicyUuid: string;
     WhitelistType: WhiteListType;
     Values: string[];
 };
 export type GetWhiteListArgs = {
-    PolicyUUID: string;
+    PolicyUuid: string;
     WhitelistType: WhiteListType;
     Offset: number;
     Limit: number;
