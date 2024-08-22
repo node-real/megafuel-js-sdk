@@ -1,0 +1,40 @@
+{
+  "name": "megafuel-js-sdk",
+  "version": "1.0.0",
+  "description": "SDK for megafuel product",
+  "repository": "https://github.com/node-real/,egafuel-js-sdk",
+  "license": "GPL-3.0-or-later",
+  "keywords": [
+    "megafuel"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "main": "./dist/tsc/main.js",
+  "types": "./dist/tsc/main.d.ts",
+  "scripts": {
+    "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
+    "test": "jest",
+    "clean": "rm -rf dist build package",
+    "ts-node": "ts-node",
+    "docs": "typedoc --entryPoints src/main.ts",
+    "build": "tsc -p tsconfig.json",
+    "build-all": "yarn clean && yarn build"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.4",
+    "@types/node": "^18.11.10",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "esbuild": "^0.15.18",
+    "eslint": "^8.29.0",
+    "jest": "29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.23.21",
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "ethers": "^6.13.2"
+  }
+}
