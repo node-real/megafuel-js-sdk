@@ -8,7 +8,7 @@ export type IsSponsorableResponse = {
   SponsorWebsite: string
 }
 
-export enum GaslessTransactionStatus { new = 0, pending = 1, confirmed = 2, failed = 3, invalid = 4}
+export enum GaslessTransactionStatus { New = 0, Pending = 1, Confirmed = 2, Failed = 3, Invalid = 4}
 
 export type GaslessTransaction = {
   readonly TxHash: string
