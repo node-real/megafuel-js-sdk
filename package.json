@@ -2,7 +2,7 @@
   "name": "megafuel-js-sdk",
   "version": "1.0.0",
   "description": "SDK for megafuel product",
-  "repository": "https://github.com/node-real/,egafuel-js-sdk",
+  "repository": "https://github.com/node-real/megafuel-js-sdk",
   "license": "GPL-3.0-or-later",
   "keywords": [
     "megafuel"
