@@ -11,8 +11,8 @@ var WhiteListType;
     WhiteListType["BEP20ReceiverWhiteList"] = "BEP20ReceiverWhiteList";
 })(WhiteListType = exports.WhiteListType || (exports.WhiteListType = {}));
 class SponsorClient extends ethers_1.ethers.JsonRpcProvider {
-    constructor(url) {
-        super(url);
+    constructor(url, network, options) {
+        super(url, network, options);
     }
     addToWhitelist(params) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

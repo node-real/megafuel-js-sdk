@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, FetchRequest, JsonRpcApiProviderOptions, Networkish } from 'ethers';
 export declare enum WhiteListType {
     FromAccountWhitelist = "FromAccountWhitelist",
     ToAccountWhitelist = "ToAccountWhitelist",
@@ -17,7 +17,7 @@ export type GetWhiteListArgs = {
     limit: number;
 };
 export declare class SponsorClient extends ethers.JsonRpcProvider {
-    constructor(url: string);
+    constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions);
     addToWhitelist(params: WhiteListArgs): Promise<boolean>;
     removeFromWhitelist(params: WhiteListArgs): Promise<boolean>;
     emptyWhitelist(params: WhiteListArgs): Promise<boolean>;

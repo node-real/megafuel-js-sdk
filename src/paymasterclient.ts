@@ -1,4 +1,4 @@
-import {ethers, TransactionRequest} from 'ethers'
+import {ethers, FetchRequest, JsonRpcApiProviderOptions, Networkish, TransactionRequest} from 'ethers'
 import type {AddressLike} from 'ethers/src.ts/address'
 
 export type IsSponsorableResponse = {
@@ -25,8 +25,8 @@ export type GaslessTransaction = {
 }
 
 export class PaymasterClient extends ethers.JsonRpcProvider {
-  constructor(url:string) {
-    super(url)
+  constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions) {
+    super(url, network, options);
   }
 
   async ChainID(): Promise<string> {

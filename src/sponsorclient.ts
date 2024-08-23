@@ -1,4 +1,4 @@
-import {ethers} from 'ethers'
+import {ethers, FetchRequest, JsonRpcApiProviderOptions, Networkish} from 'ethers'
 
 export enum WhiteListType {
   FromAccountWhitelist = 'FromAccountWhitelist',
@@ -21,8 +21,8 @@ export type GetWhiteListArgs = {
 }
 
 export class SponsorClient extends ethers.JsonRpcProvider {
-  constructor(url:string) {
-    super(url)
+  constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions) {
+    super(url, network, options);
   }
 
   async addToWhitelist(params: WhiteListArgs): Promise<boolean> {

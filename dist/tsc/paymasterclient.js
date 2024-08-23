@@ -12,8 +12,8 @@ var GaslessTransactionStatus;
     GaslessTransactionStatus[GaslessTransactionStatus["Invalid"] = 4] = "Invalid";
 })(GaslessTransactionStatus = exports.GaslessTransactionStatus || (exports.GaslessTransactionStatus = {}));
 class PaymasterClient extends ethers_1.ethers.JsonRpcProvider {
-    constructor(url) {
-        super(url);
+    constructor(url, network, options) {
+        super(url, network, options);
     }
     ChainID() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
