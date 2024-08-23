@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SponsorClient = exports.WhiteListType = void 0;
+exports.SponsorClient = exports.WhitelistType = void 0;
 const tslib_1 = require("tslib");
 const ethers_1 = require("ethers");
-var WhiteListType;
-(function (WhiteListType) {
-    WhiteListType["FromAccountWhitelist"] = "FromAccountWhitelist";
-    WhiteListType["ToAccountWhitelist"] = "ToAccountWhitelist";
-    WhiteListType["ContractMethodSigWhitelist"] = "ContractMethodSigWhitelist";
-    WhiteListType["BEP20ReceiverWhiteList"] = "BEP20ReceiverWhiteList";
-})(WhiteListType = exports.WhiteListType || (exports.WhiteListType = {}));
+var WhitelistType;
+(function (WhitelistType) {
+    WhitelistType["FromAccountWhitelist"] = "FromAccountWhitelist";
+    WhitelistType["ToAccountWhitelist"] = "ToAccountWhitelist";
+    WhitelistType["ContractMethodSigWhitelist"] = "ContractMethodSigWhitelist";
+    WhitelistType["BEP20ReceiverWhiteList"] = "BEP20ReceiverWhiteList";
+})(WhitelistType = exports.WhitelistType || (exports.WhitelistType = {}));
 class SponsorClient extends ethers_1.ethers.JsonRpcProvider {
     constructor(url, network, options) {
         super(url, network, options);

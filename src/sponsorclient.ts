@@ -1,6 +1,6 @@
 import {ethers, FetchRequest, JsonRpcApiProviderOptions, Networkish} from 'ethers'
 
-export enum WhiteListType {
+export enum WhitelistType {
   FromAccountWhitelist = 'FromAccountWhitelist',
   ToAccountWhitelist = 'ToAccountWhitelist',
   ContractMethodSigWhitelist = 'ContractMethodSigWhitelist',
@@ -9,13 +9,13 @@ export enum WhiteListType {
 
 export type WhiteListArgs = {
   PolicyUUID: string
-  WhitelistType: WhiteListType
+  WhitelistType: WhitelistType
   Values: string[]
 }
 
 export type GetWhiteListArgs = {
-  PolicyUuid: string
-  WhitelistType: WhiteListType
+  PolicyUUID: string
+  WhitelistType: WhitelistType
   Offset: number
   Limit: number
 }
