@@ -6,15 +6,15 @@ export declare enum WhiteListType {
     BEP20ReceiverWhiteList = "BEP20ReceiverWhiteList"
 }
 export type WhiteListArgs = {
-    policyUuid: string;
-    whitelistType: WhiteListType;
-    values: string[];
+    PolicyUUID: string;
+    WhitelistType: WhiteListType;
+    Values: string[];
 };
 export type GetWhiteListArgs = {
-    policyUuid: string;
-    whitelistType: WhiteListType;
-    offset: number;
-    limit: number;
+    PolicyUuid: string;
+    WhitelistType: WhiteListType;
+    Offset: number;
+    Limit: number;
 };
 export declare class SponsorClient extends ethers.JsonRpcProvider {
     constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions);

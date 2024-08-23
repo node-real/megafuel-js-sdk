@@ -8,16 +8,16 @@ export enum WhiteListType {
 }
 
 export type WhiteListArgs = {
-  policyUuid: string
-  whitelistType: WhiteListType
-  values: string[]
+  PolicyUUID: string
+  WhitelistType: WhiteListType
+  Values: string[]
 }
 
 export type GetWhiteListArgs = {
-  policyUuid: string
-  whitelistType: WhiteListType
-  offset: number
-  limit: number
+  PolicyUuid: string
+  WhitelistType: WhiteListType
+  Offset: number
+  Limit: number
 }
 
 export class SponsorClient extends ethers.JsonRpcProvider {
