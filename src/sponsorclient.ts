@@ -7,13 +7,13 @@ export enum WhitelistType {
   BEP20ReceiverWhiteList = 'BEP20ReceiverWhiteList'
 }
 
-export type WhiteListArgs = {
+export type WhitelistArgs = {
   PolicyUUID: string
   WhitelistType: WhitelistType
   Values: string[]
 }
 
-export type GetWhiteListArgs = {
+export type GetWhitelistArgs = {
   PolicyUUID: string
   WhitelistType: WhitelistType
   Offset: number
@@ -25,19 +25,19 @@ export class SponsorClient extends ethers.JsonRpcProvider {
     super(url, network, options);
   }
 
-  async addToWhitelist(params: WhiteListArgs): Promise<boolean> {
+  async addToWhitelist(params: WhitelistArgs): Promise<boolean> {
     return this.send('pm_addToWhitelist', [params])
   }
 
-  async removeFromWhitelist(params: WhiteListArgs): Promise<boolean> {
+  async removeFromWhitelist(params: WhitelistArgs): Promise<boolean> {
     return this.send('pm_rmFromWhitelist', [params])
   }
 
-  async emptyWhitelist(params: WhiteListArgs): Promise<boolean> {
+  async emptyWhitelist(params: WhitelistArgs): Promise<boolean> {
     return this.send('pm_emptyWhitelist', [params])
   }
 
-  async getWhitelist(params: GetWhiteListArgs): Promise<string[]> {
+  async getWhitelist(params: GetWhitelistArgs): Promise<string[]> {
     return this.send('pm_getWhitelist', [params])
   }
 }

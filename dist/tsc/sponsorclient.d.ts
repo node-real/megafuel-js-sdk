@@ -5,12 +5,12 @@ export declare enum WhitelistType {
     ContractMethodSigWhitelist = "ContractMethodSigWhitelist",
     BEP20ReceiverWhiteList = "BEP20ReceiverWhiteList"
 }
-export type WhiteListArgs = {
+export type WhitelistArgs = {
     PolicyUUID: string;
     WhitelistType: WhitelistType;
     Values: string[];
 };
-export type GetWhiteListArgs = {
+export type GetWhitelistArgs = {
     PolicyUUID: string;
     WhitelistType: WhitelistType;
     Offset: number;
@@ -18,8 +18,8 @@ export type GetWhiteListArgs = {
 };
 export declare class SponsorClient extends ethers.JsonRpcProvider {
     constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions);
-    addToWhitelist(params: WhiteListArgs): Promise<boolean>;
-    removeFromWhitelist(params: WhiteListArgs): Promise<boolean>;
-    emptyWhitelist(params: WhiteListArgs): Promise<boolean>;
-    getWhitelist(params: GetWhiteListArgs): Promise<string[]>;
+    addToWhitelist(params: WhitelistArgs): Promise<boolean>;
+    removeFromWhitelist(params: WhitelistArgs): Promise<boolean>;
+    emptyWhitelist(params: WhitelistArgs): Promise<boolean>;
+    getWhitelist(params: GetWhitelistArgs): Promise<string[]>;
 }
