@@ -1,6 +1,6 @@
 {
   "name": "megafuel-js-sdk",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "SDK for megafuel product",
   "repository": "https://github.com/node-real/megafuel-js-sdk",
   "license": "GPL-3.0-or-later",

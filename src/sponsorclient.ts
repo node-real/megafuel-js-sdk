@@ -13,6 +13,11 @@ export type WhitelistArgs = {
   Values: string[]
 }
 
+export type EmptyWhitelistArgs = {
+  PolicyUUID: string
+  WhitelistType: WhitelistType
+}
+
 export type GetWhitelistArgs = {
   PolicyUUID: string
   WhitelistType: WhitelistType
@@ -33,7 +38,7 @@ export class SponsorClient extends ethers.JsonRpcProvider {
     return this.send('pm_rmFromWhitelist', [params])
   }
 
-  async emptyWhitelist(params: WhitelistArgs): Promise<boolean> {
+  async emptyWhitelist(params: EmptyWhitelistArgs): Promise<boolean> {
     return this.send('pm_emptyWhitelist', [params])
   }
 
