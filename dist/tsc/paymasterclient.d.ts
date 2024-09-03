@@ -1,5 +1,6 @@
 import { ethers, FetchRequest, JsonRpcApiProviderOptions, Networkish, TransactionRequest } from 'ethers';
 import type { AddressLike } from 'ethers/src.ts/address';
+import type { BigNumberish } from 'ethers/src.ts/utils';
 export type IsSponsorableResponse = {
     Sponsorable: boolean;
     SponsorName: string;
@@ -26,10 +27,32 @@ export type GaslessTransaction = {
     readonly BornBlockNumber: bigint;
     readonly ChainID: number;
 };
+export type SponsorTx = {
+    readonly TxHash: string;
+    readonly Address: AddressLike;
+    readonly BundleUUID: string;
+    readonly Status: GaslessTransactionStatus;
+    readonly GasPrice?: BigNumberish;
+    readonly GasFee?: BigNumberish;
+    readonly BornBlockNumber: bigint;
+    readonly ChainID: number;
+};
+export type Bundle = {
+    readonly BundleUUID: string;
+    readonly Status: GaslessTransactionStatus;
+    readonly AvgGasPrice?: BigNumberish;
+    readonly BornBlockNumber: bigint;
+    readonly ConfirmedBlockNumber: bigint;
+    readonly ConfirmedDate: bigint;
+    readonly ChainID: number;
+};
 export declare class PaymasterClient extends ethers.JsonRpcProvider {
     constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions);
     ChainID(): Promise<string>;
     isSponsorable(tx: TransactionRequest): Promise<IsSponsorableResponse>;
     sendRawTransaction(signedTx: string): Promise<string>;
     getGaslessTransactionByHash(hash: string): Promise<GaslessTransaction>;
+    getSponsorTxByTxHash(hash: string): Promise<SponsorTx>;
+    GetSponsorTxByBundleUUID(bundleUUID: string): Promise<GaslessTransaction[]>;
+    getBundleByUUID(bundleUUID: string): Promise<Bundle>;
 }

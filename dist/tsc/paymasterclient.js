@@ -35,6 +35,21 @@ class PaymasterClient extends ethers_1.ethers.JsonRpcProvider {
             return yield this.send('eth_getGaslessTransactionByHash', [hash]);
         });
     }
+    getSponsorTxByTxHash(hash) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return yield this.send('pm_getSponsorTxByTxHash', [hash]);
+        });
+    }
+    GetSponsorTxByBundleUUID(bundleUUID) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return yield this.send('pm_getSponsorTxByBundleUUID', [bundleUUID]);
+        });
+    }
+    getBundleByUUID(bundleUUID) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return yield this.send('pm_getBundleByUUID', [bundleUUID]);
+        });
+    }
 }
 exports.PaymasterClient = PaymasterClient;
 //# sourceMappingURL=paymasterclient.js.map

@@ -1,4 +1,6 @@
 import {ethers, FetchRequest, JsonRpcApiProviderOptions, Networkish} from 'ethers'
+import type {AddressLike} from 'ethers/src.ts/address'
+import type {BigNumberish} from 'ethers/src.ts/utils'
 
 export enum WhitelistType {
   FromAccountWhitelist = 'FromAccountWhitelist',
@@ -25,9 +27,24 @@ export type GetWhitelistArgs = {
   Limit: number
 }
 
+export type UserSpendData = {
+  UserAddress: AddressLike
+  GasCost?: BigNumberish
+  GasCostCurDay?: BigNumberish
+  TxCountCurDay: bigint
+  UpdateAt: bigint
+  ChainID: number
+}
+
+export type PolicySpendData = {
+  Cost?: BigNumberish
+  UpdateAt: bigint
+  ChainID: number
+}
+
 export class SponsorClient extends ethers.JsonRpcProvider {
   constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions) {
-    super(url, network, options);
+    super(url, network, options)
   }
 
   async addToWhitelist(params: WhitelistArgs): Promise<boolean> {
@@ -44,5 +61,13 @@ export class SponsorClient extends ethers.JsonRpcProvider {
 
   async getWhitelist(params: GetWhitelistArgs): Promise<string[]> {
     return this.send('pm_getWhitelist', [params])
+  }
+
+  async GetUserSpendData(fromAddress: AddressLike, policyUUID: string): Promise<UserSpendData> {
+    return this.send('pm_getUserSpendData', [fromAddress, policyUUID])
+  }
+
+  async GetPolicySpendData(policyUUID: string): Promise<PolicySpendData> {
+    return this.send('pm_getPolicySpendData', [policyUUID])
   }
 }

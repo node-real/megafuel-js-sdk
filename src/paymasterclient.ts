@@ -1,5 +1,6 @@
 import {ethers, FetchRequest, JsonRpcApiProviderOptions, Networkish, TransactionRequest} from 'ethers'
 import type {AddressLike} from 'ethers/src.ts/address'
+import type {BigNumberish} from 'ethers/src.ts/utils'
 
 export type IsSponsorableResponse = {
   Sponsorable: boolean
@@ -24,9 +25,30 @@ export type GaslessTransaction = {
   readonly ChainID: number
 }
 
+export type SponsorTx = {
+  readonly TxHash: string
+  readonly Address: AddressLike
+  readonly BundleUUID: string
+  readonly Status: GaslessTransactionStatus
+  readonly GasPrice?: BigNumberish
+  readonly GasFee?: BigNumberish
+  readonly BornBlockNumber: bigint
+  readonly ChainID: number
+}
+
+export type Bundle = {
+  readonly BundleUUID: string
+  readonly Status: GaslessTransactionStatus
+  readonly AvgGasPrice?: BigNumberish
+  readonly BornBlockNumber: bigint
+  readonly ConfirmedBlockNumber: bigint
+  readonly ConfirmedDate: bigint
+  readonly ChainID: number
+}
+
 export class PaymasterClient extends ethers.JsonRpcProvider {
   constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions) {
-    super(url, network, options);
+    super(url, network, options)
   }
 
   async ChainID(): Promise<string> {
@@ -43,5 +65,17 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
 
   async getGaslessTransactionByHash(hash: string): Promise<GaslessTransaction> {
     return await this.send('eth_getGaslessTransactionByHash', [hash])
+  }
+
+  async getSponsorTxByTxHash(hash: string): Promise<SponsorTx> {
+    return await this.send('pm_getSponsorTxByTxHash', [hash])
+  }
+
+  async GetSponsorTxByBundleUUID(bundleUUID: string): Promise<GaslessTransaction[]> {
+    return await this.send('pm_getSponsorTxByBundleUUID', [bundleUUID])
+  }
+
+  async getBundleByUUID(bundleUUID: string): Promise<Bundle> {
+    return await this.send('pm_getBundleByUUID', [bundleUUID])
   }
 }
