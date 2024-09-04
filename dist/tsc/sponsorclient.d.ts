@@ -41,6 +41,6 @@ export declare class SponsorClient extends ethers.JsonRpcProvider {
     removeFromWhitelist(params: WhitelistArgs): Promise<boolean>;
     emptyWhitelist(params: EmptyWhitelistArgs): Promise<boolean>;
     getWhitelist(params: GetWhitelistArgs): Promise<string[]>;
-    GetUserSpendData(fromAddress: AddressLike, policyUUID: string): Promise<UserSpendData>;
-    GetPolicySpendData(policyUUID: string): Promise<PolicySpendData>;
+    getUserSpendData(fromAddress: AddressLike, policyUUID: string): Promise<UserSpendData>;
+    getPolicySpendData(policyUUID: string): Promise<PolicySpendData>;
 }

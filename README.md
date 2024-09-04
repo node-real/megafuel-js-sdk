@@ -1,8 +1,6 @@
 # megafuel-js-sdk
 
-This is Javascript SDK for the MegaFuel clients, it provides a simple way to interact with the MegaFuel.
-
-For more information, please refer to the [API documentation](https://docs.nodereal.io/docs/megafuel-api).
+This JavaScript SDK is thin wrapper of MegaFuel clients, offering a streamlined interface to interact with the MegaFuel. For more information, please refer to the [API documentation](https://docs.nodereal.io/docs/megafuel-api).
 
 ## Quick Start
 1. Install dependency

@@ -63,11 +63,11 @@ export class SponsorClient extends ethers.JsonRpcProvider {
     return this.send('pm_getWhitelist', [params])
   }
 
-  async GetUserSpendData(fromAddress: AddressLike, policyUUID: string): Promise<UserSpendData> {
+  async getUserSpendData(fromAddress: AddressLike, policyUUID: string): Promise<UserSpendData> {
     return this.send('pm_getUserSpendData', [fromAddress, policyUUID])
   }
 
-  async GetPolicySpendData(policyUUID: string): Promise<PolicySpendData> {
+  async getPolicySpendData(policyUUID: string): Promise<PolicySpendData> {
     return this.send('pm_getPolicySpendData', [policyUUID])
   }
 }

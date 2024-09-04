@@ -34,12 +34,12 @@ class SponsorClient extends ethers_1.ethers.JsonRpcProvider {
             return this.send('pm_getWhitelist', [params]);
         });
     }
-    GetUserSpendData(fromAddress, policyUUID) {
+    getUserSpendData(fromAddress, policyUUID) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             return this.send('pm_getUserSpendData', [fromAddress, policyUUID]);
         });
     }
-    GetPolicySpendData(policyUUID) {
+    getPolicySpendData(policyUUID) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             return this.send('pm_getPolicySpendData', [policyUUID]);
         });

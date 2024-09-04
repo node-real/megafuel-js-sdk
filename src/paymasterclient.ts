@@ -13,13 +13,15 @@ export enum GaslessTransactionStatus { New = 0, Pending = 1, Confirmed = 2, Fail
 
 export type GaslessTransaction = {
   readonly TxHash: string
-  readonly BundleID: bigint
+  readonly BundleUUID: string
   readonly FromAddress?: AddressLike
   readonly ToAddress?: AddressLike
+  readonly Nonce: number
   readonly RawData: string
   readonly Status: GaslessTransactionStatus
   readonly GasUsed: bigint
-  readonly PolicyID: bigint
+  readonly GasFee?: BigNumberish
+  readonly PolicyUUID: bigint
   readonly Source: string
   readonly BornBlockNumber: bigint
   readonly ChainID: number
@@ -71,11 +73,11 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
     return await this.send('pm_getSponsorTxByTxHash', [hash])
   }
 
-  async getSponsorTxByBundleUUID(bundleUUID: string): Promise<SponsorTx> {
-    return await this.send('pm_getSponsorTxByBundleUUID', [bundleUUID])
+  async getSponsorTxByBundleUuid(bundleUuid: string): Promise<SponsorTx> {
+    return await this.send('pm_getSponsorTxByBundleUuid', [bundleUuid])
   }
 
-  async getBundleByUUID(bundleUUID: string): Promise<Bundle> {
-    return await this.send('pm_getBundleByUUID', [bundleUUID])
+  async getBundleByUuid(bundleUuid: string): Promise<Bundle> {
+    return await this.send('pm_getBundleByUuid', [bundleUuid])
   }
 }

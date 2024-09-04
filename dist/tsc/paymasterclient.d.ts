@@ -16,13 +16,15 @@ export declare enum GaslessTransactionStatus {
 }
 export type GaslessTransaction = {
     readonly TxHash: string;
-    readonly BundleID: bigint;
+    readonly BundleUUID: string;
     readonly FromAddress?: AddressLike;
     readonly ToAddress?: AddressLike;
+    readonly Nonce: number;
     readonly RawData: string;
     readonly Status: GaslessTransactionStatus;
     readonly GasUsed: bigint;
-    readonly PolicyID: bigint;
+    readonly GasFee?: BigNumberish;
+    readonly PolicyUUID: bigint;
     readonly Source: string;
     readonly BornBlockNumber: bigint;
     readonly ChainID: number;
@@ -53,6 +55,6 @@ export declare class PaymasterClient extends ethers.JsonRpcProvider {
     sendRawTransaction(signedTx: string): Promise<string>;
     getGaslessTransactionByHash(hash: string): Promise<GaslessTransaction>;
     getSponsorTxByTxHash(hash: string): Promise<SponsorTx>;
-    getSponsorTxByBundleUUID(bundleUUID: string): Promise<SponsorTx>;
-    getBundleByUUID(bundleUUID: string): Promise<Bundle>;
+    getSponsorTxByBundleUuid(bundleUuid: string): Promise<SponsorTx>;
+    getBundleByUuid(bundleUuid: string): Promise<Bundle>;
 }

@@ -40,14 +40,14 @@ class PaymasterClient extends ethers_1.ethers.JsonRpcProvider {
             return yield this.send('pm_getSponsorTxByTxHash', [hash]);
         });
     }
-    getSponsorTxByBundleUUID(bundleUUID) {
+    getSponsorTxByBundleUuid(bundleUuid) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.send('pm_getSponsorTxByBundleUUID', [bundleUUID]);
+            return yield this.send('pm_getSponsorTxByBundleUuid', [bundleUuid]);
         });
     }
-    getBundleByUUID(bundleUUID) {
+    getBundleByUuid(bundleUuid) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.send('pm_getBundleByUUID', [bundleUUID]);
+            return yield this.send('pm_getBundleByUuid', [bundleUuid]);
         });
     }
 }
