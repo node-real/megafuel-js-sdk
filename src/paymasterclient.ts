@@ -71,7 +71,7 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
     return await this.send('pm_getSponsorTxByTxHash', [hash])
   }
 
-  async GetSponsorTxByBundleUUID(bundleUUID: string): Promise<GaslessTransaction[]> {
+  async getSponsorTxByBundleUUID(bundleUUID: string): Promise<SponsorTx> {
     return await this.send('pm_getSponsorTxByBundleUUID', [bundleUUID])
   }
 

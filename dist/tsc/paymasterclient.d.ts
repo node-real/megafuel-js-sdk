@@ -53,6 +53,6 @@ export declare class PaymasterClient extends ethers.JsonRpcProvider {
     sendRawTransaction(signedTx: string): Promise<string>;
     getGaslessTransactionByHash(hash: string): Promise<GaslessTransaction>;
     getSponsorTxByTxHash(hash: string): Promise<SponsorTx>;
-    GetSponsorTxByBundleUUID(bundleUUID: string): Promise<GaslessTransaction[]>;
+    getSponsorTxByBundleUUID(bundleUUID: string): Promise<SponsorTx>;
     getBundleByUUID(bundleUUID: string): Promise<Bundle>;
 }
