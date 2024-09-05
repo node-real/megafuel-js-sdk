@@ -50,7 +50,7 @@ export type Bundle = {
 };
 export declare class PaymasterClient extends ethers.JsonRpcProvider {
     constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions);
-    ChainID(): Promise<string>;
+    chainID(): Promise<string>;
     isSponsorable(tx: TransactionRequest): Promise<IsSponsorableResponse>;
     sendRawTransaction(signedTx: string): Promise<string>;
     getGaslessTransactionByHash(hash: string): Promise<GaslessTransaction>;

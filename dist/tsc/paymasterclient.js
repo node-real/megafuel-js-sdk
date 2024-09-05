@@ -15,7 +15,7 @@ class PaymasterClient extends ethers_1.ethers.JsonRpcProvider {
     constructor(url, network, options) {
         super(url, network, options);
     }
-    ChainID() {
+    chainID() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.send('eth_chainId', []);
         });

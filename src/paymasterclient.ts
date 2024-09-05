@@ -53,7 +53,7 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
     super(url, network, options)
   }
 
-  async ChainID(): Promise<string> {
+  async chainID(): Promise<string> {
     return await this.send('eth_chainId', [])
   }
 

@@ -2,6 +2,11 @@
 
 This JavaScript SDK is thin wrapper of MegaFuel clients, offering a streamlined interface to interact with the MegaFuel. For more information, please refer to the [API documentation](https://docs.nodereal.io/docs/megafuel-api).
 
+## Network Endpoint
+
+- BSC mainet: https://bsc-megafuel.nodereal.io
+- BSC testnet: https://bsc-megafuel-testnet.nodereal.io
+-
 ## Quick Start
 1. Install dependency
 Configure dependency in your `package.json` file:
