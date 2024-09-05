@@ -6,7 +6,16 @@ This JavaScript SDK is thin wrapper of MegaFuel clients, offering a streamlined 
 
 - BSC mainet: https://bsc-megafuel.nodereal.io
 - BSC testnet: https://bsc-megafuel-testnet.nodereal.io
--
+
+- BSC mainnet sponsor: https://open-platform.nodereal.io/<api-key>/megafuel-testnet
+- BSC testnet sponsor: https://open-platform.nodereal.io/<api-key>/megafuel
+
+- OpBNB mainnet: https://opbnb-megafuel.nodereal.io
+- OpBNB testnet: https://opbnb-megafuel-testnet.nodereal.io
+
+- OpBNB mainnet sponsor: https://open-platform.nodereal.io/<api-key>/opbnb-megafuel
+- OpBNB testnet sponsor: https://open-platform.nodereal.io/<api-key>/opbnb-megafuel-testnet
+
 ## Quick Start
 1. Install dependency
 Configure dependency in your `package.json` file:
