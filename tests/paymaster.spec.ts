@@ -5,48 +5,43 @@ import {
   tokenAbi,
   transformIsSponsorableResponse,
   transformToGaslessTransaction,
-  delay, transformSponsorTxResponse,
+  delay, transformSponsorTxResponse, transformBundleResponse,
 } from './utils'
 import {TOKEN_CONTRACT_ADDRESS, CHAIN_ID, RECIPIENT_ADDRESS} from './env'
 import {ethers} from 'ethers'
 
-
 let TX_HASH = ''
 
 /**
- * test paymaster apis
+ * Testing suite for Paymaster API functionalities.
  */
-
 describe('paymasterQuery', () => {
 
+  /**
+   * Test for retrieving chain ID from the paymaster provider.
+   */
   describe('chainID', () => {
-    test('it works', async () => {
+    test('chainID should return the expected value', async () => {
       const res = await paymasterProvider.chainID()
       expect(res).toEqual('0x61')
     })
   })
 
+  /**
+   * Test for checking if a transaction is sponsorable.
+   */
   describe('isSponsorable', () => {
-    test('it works', async () => {
-      // Create contract instance
+    test('should successfully determine if transaction is sponsorable', async () => {
       const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, wallet)
-
-      // Transaction details
-      const tokenAmount = ethers.parseUnits('1.0', 18) // Amount of tokens to send (adjust decimals as needed)
-      // Get the current nonce for the sender's address
+      const tokenAmount = ethers.parseUnits('1.0', 18)
       const nonce = await paymasterProvider.getTransactionCount(wallet.address, 'pending')
 
-
-      // Create the transaction object
       const transaction = await tokenContract.transfer.populateTransaction(RECIPIENT_ADDRESS.toLowerCase(), tokenAmount)
-
-      // Add nonce and gas settings
       transaction.from = wallet.address
-      console.log('wallet.address:', transaction.from)
       transaction.nonce = nonce
-      transaction.gasLimit = BigInt(100000) // Adjust gas limit as needed for token transfers
+      transaction.gasLimit = BigInt(100000)
       transaction.chainId = BigInt(CHAIN_ID)
-      transaction.gasPrice = BigInt(0) // Set gas price to 0
+      transaction.gasPrice = BigInt(0)
 
       const safeTransaction = {
         ...transaction,
@@ -54,47 +49,51 @@ describe('paymasterQuery', () => {
         chainId: transaction.chainId.toString(),
         gasPrice: transaction.gasPrice.toString(),
       }
-      console.log(safeTransaction)
+
+      console.log('Prepared transaction:', safeTransaction)
       const resRaw = await paymasterProvider.isSponsorable(safeTransaction)
       const res = transformIsSponsorableResponse(resRaw)
-      console.log(res)
       expect(res.Sponsorable).toEqual(true)
 
       const signedTx = await wallet.signTransaction(safeTransaction)
       try {
         const tx = await paymasterProvider.sendRawTransaction(signedTx)
         TX_HASH = tx
-        console.log('Transaction sent:', tx)
-        console.log('TX_HASH:', TX_HASH)
+        console.log('Transaction hash received:', TX_HASH)
       } catch (error) {
-        console.error('Error sending transaction:', error)
+        console.error('Transaction failed:', error)
       }
-    }, 100000)
+    }, 100000) // Extends the default timeout as this test involves network calls
   })
 
+  /**
+   * Test for retrieving a gasless transaction by its hash and verifying related transactions.
+   */
   describe('getGaslessTransactionByHash', () => {
-    test('it works', async () => {
-      console.log('Waiting for the transaction to be confirmed and queryable on the blockchain.')
+    test('should confirm and retrieve transaction details', async () => {
+      console.log('Waiting for transaction confirmation...')
       await delay(8000)
-      console.log('getGaslessTransactionByHash TX_HASH:', TX_HASH)
+      console.log('Querying gasless transaction by hash:', TX_HASH)
       const resRaw = await paymasterProvider.getGaslessTransactionByHash(TX_HASH)
       const res = transformToGaslessTransaction(resRaw)
-      console.log(res)
       expect(res.ToAddress).toEqual(TOKEN_CONTRACT_ADDRESS.toLowerCase())
+      console.log('Querying gasless transaction', res)
 
-      console.log('getSponsorTxByBundleUuid res.BundleUUID:', res.BundleUUID)
+      console.log('Retrieving sponsor transaction by bundle UUID:', res.BundleUUID)
       const txRaw = await paymasterProvider.getSponsorTxByBundleUuid(res.BundleUUID)
       const tx = transformSponsorTxResponse(txRaw)
-      expect(resRaw).not.toBeNull()
-      console.log(tx)
+      expect(txRaw).not.toBeNull()
+      console.log('Sponsor transaction details:', tx)
 
-      const bundle = await paymasterProvider.getBundleByUuid(res.BundleUUID)
-      expect(bundle).not.toBeNull()
-      console.log(bundle)
+      const bundleRaw = await paymasterProvider.getBundleByUuid(res.BundleUUID)
+      const bundle = transformBundleResponse(bundleRaw)
+      expect(bundle.BundleUUID).toEqual(res.BundleUUID)
+      console.log('Bundle details:', bundle)
 
-      const sponsorTx = await paymasterProvider.getSponsorTxByTxHash(tx.TxHash)
-      console.log('sponsorTx: ', sponsorTx)
-      expect(sponsorTx).not.toBeNull()
+      const sponsorTxRaw = await paymasterProvider.getSponsorTxByTxHash(tx.TxHash)
+      const sponsorTx = transformSponsorTxResponse(sponsorTxRaw)
+      console.log('Sponsor transaction:', sponsorTx)
+      expect(sponsorTx.TxHash).toEqual(tx.TxHash)
     }, 13000)
   })
 })

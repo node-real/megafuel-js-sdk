@@ -1,4 +1,12 @@
-import {SponsorClient, PaymasterClient, IsSponsorableResponse, GaslessTransaction, SponsorTx} from '../src'
+import {
+  SponsorClient,
+  PaymasterClient,
+  IsSponsorableResponse,
+  GaslessTransaction,
+  SponsorTx,
+  Bundle,
+  GaslessTransactionStatus,
+} from '../src'
 import {CHAIN_ID, SPONSOR_URL, CHAIN_URL, PAYMASTER_URL, PRIVATE_KEY, TOKEN_CONTRACT_ADDRESS} from './env'
 import {ethers} from 'ethers'
 
@@ -59,7 +67,19 @@ export function transformSponsorTxResponse(rawResponse: any): SponsorTx {
   }
 }
 
+export function transformBundleResponse(rawResponse: any): Bundle {
+  return {
+    BundleUUID: rawResponse.bundleUuid,
+    Status: rawResponse.status as GaslessTransactionStatus, // Cast to GaslessTransactionStatus
+    AvgGasPrice: rawResponse.avgGasPrice, // Assume this is BigNumberish already
+    BornBlockNumber: BigInt(rawResponse.bornBlockNumber),
+    ConfirmedBlockNumber: BigInt(rawResponse.confirmedBlockNumber),
+    ConfirmedDate: BigInt(rawResponse.confirmedDate),
+    ChainID: parseInt(rawResponse.chainId),
+  }
+}
+
 // Function to create a delay
 export function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
