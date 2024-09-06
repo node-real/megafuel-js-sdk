@@ -1,0 +1,12 @@
+name: 'CI setup'
+description: NPM install deps
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '18.20.2'
+
+    - name: Install dependencies
+      shell: bash
+      run: npm install

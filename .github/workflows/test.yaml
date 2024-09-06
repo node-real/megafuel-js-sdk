@@ -1,0 +1,28 @@
+name: Test Case
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+
+  run-tests:
+    runs-on: ubuntu-latest
+
+    env:
+      ACCOUNT_ADDRESS: ${{ secrets.ACCOUNT_ADDRESS }}
+      ACCOUNT_PRIVATEKEY: ${{ secrets.ACCOUNT_PRIVATEKEY }}
+      OPEN_PLATFORM_PRIVATE_KEY: ${{ secrets.OPEN_PLATFORM_PRIVATE_KEY }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/ci-setup
+
+#      - name: Build
+#        run: npm run build
+
+      - name: Run Test
+        run: npm run test
