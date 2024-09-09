@@ -1,6 +1,6 @@
 import {describe, expect, test} from '@jest/globals'
 import {
-  paymasterProvider,
+  paymasterClient,
   wallet,
   tokenAbi,
   transformIsSponsorableResponse,
@@ -22,7 +22,7 @@ describe('paymasterQuery', () => {
    */
   describe('chainID', () => {
     test('chainID should return the expected value', async () => {
-      const res = await paymasterProvider.chainID()
+      const res = await paymasterClient.chainID()
       expect(res).toEqual('0x61')
     })
   })
@@ -34,7 +34,7 @@ describe('paymasterQuery', () => {
     test('should successfully determine if transaction is sponsorable', async () => {
       const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, wallet)
       const tokenAmount = ethers.parseUnits('0', 18)
-      const nonce = await paymasterProvider.getTransactionCount(wallet.address, 'pending')
+      const nonce = await paymasterClient.getTransactionCount(wallet.address, 'pending')
 
       const transaction = await tokenContract.transfer.populateTransaction(RECIPIENT_ADDRESS.toLowerCase(), tokenAmount)
       transaction.from = wallet.address
@@ -51,13 +51,13 @@ describe('paymasterQuery', () => {
       }
 
       console.log('Prepared transaction:', safeTransaction)
-      const resRaw = await paymasterProvider.isSponsorable(safeTransaction)
+      const resRaw = await paymasterClient.isSponsorable(safeTransaction)
       const res = transformIsSponsorableResponse(resRaw)
       expect(res.Sponsorable).toEqual(true)
 
       const signedTx = await wallet.signTransaction(safeTransaction)
       try {
-        const tx = await paymasterProvider.sendRawTransaction(signedTx)
+        const tx = await paymasterClient.sendRawTransaction(signedTx)
         TX_HASH = tx
         console.log('Transaction hash received:', TX_HASH)
       } catch (error) {
@@ -74,23 +74,23 @@ describe('paymasterQuery', () => {
       console.log('Waiting for transaction confirmation...')
       await delay(8000)
       console.log('Querying gasless transaction by hash:', TX_HASH)
-      const resRaw = await paymasterProvider.getGaslessTransactionByHash(TX_HASH)
+      const resRaw = await paymasterClient.getGaslessTransactionByHash(TX_HASH)
       const res = transformToGaslessTransaction(resRaw)
       expect(res.ToAddress).toEqual(TOKEN_CONTRACT_ADDRESS.toLowerCase())
       console.log('Querying gasless transaction', res)
 
       console.log('Retrieving sponsor transaction by bundle UUID:', res.BundleUUID)
-      const txRaw = await paymasterProvider.getSponsorTxByBundleUuid(res.BundleUUID)
+      const txRaw = await paymasterClient.getSponsorTxByBundleUuid(res.BundleUUID)
       const tx = transformSponsorTxResponse(txRaw)
       expect(txRaw).not.toBeNull()
       console.log('Sponsor transaction details:', tx)
 
-      const bundleRaw = await paymasterProvider.getBundleByUuid(res.BundleUUID)
+      const bundleRaw = await paymasterClient.getBundleByUuid(res.BundleUUID)
       const bundle = transformBundleResponse(bundleRaw)
       expect(bundle.BundleUUID).toEqual(res.BundleUUID)
       console.log('Bundle details:', bundle)
 
-      const sponsorTxRaw = await paymasterProvider.getSponsorTxByTxHash(tx.TxHash)
+      const sponsorTxRaw = await paymasterClient.getSponsorTxByTxHash(tx.TxHash)
       const sponsorTx = transformSponsorTxResponse(sponsorTxRaw)
       console.log('Sponsor transaction:', sponsorTx)
       expect(sponsorTx.TxHash).toEqual(tx.TxHash)

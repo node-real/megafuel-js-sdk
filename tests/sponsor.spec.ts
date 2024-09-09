@@ -1,5 +1,5 @@
 import {describe, expect, test} from '@jest/globals'
-import {client} from './utils'
+import {sponsorClient} from './utils'
 import {WhitelistType} from '../src'
 import {POLICY_UUID, ACCOUNT_ADDRESS, CONTRACT_METHOD} from './env'
 
@@ -12,7 +12,7 @@ describe('sponsorQuery', () => {
    */
   describe('addToWhitelist FromAccountWhitelist', () => {
     test('should add an account address to FromAccountWhitelist successfully', async () => {
-      const res = await client.addToWhitelist({
+      const res = await sponsorClient.addToWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.FromAccountWhitelist,
         Values: [ACCOUNT_ADDRESS],
@@ -28,7 +28,7 @@ describe('sponsorQuery', () => {
    */
   describe('addToWhitelist ToAccountWhitelist', () => {
     test('should add an account address to ToAccountWhitelist successfully', async () => {
-      const res = await client.addToWhitelist({
+      const res = await sponsorClient.addToWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.ToAccountWhitelist,
         Values: [ACCOUNT_ADDRESS],
@@ -44,7 +44,7 @@ describe('sponsorQuery', () => {
    */
   describe('addToWhitelist BEP20ReceiverWhiteList', () => {
     test('should add an account address to BEP20ReceiverWhiteList successfully', async () => {
-      const res = await client.addToWhitelist({
+      const res = await sponsorClient.addToWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.BEP20ReceiverWhiteList,
         Values: [ACCOUNT_ADDRESS],
@@ -60,7 +60,7 @@ describe('sponsorQuery', () => {
    */
   describe('addToWhitelist ContractMethodSigWhitelist', () => {
     test('should add a contract method signature to ContractMethodSigWhitelist successfully', async () => {
-      const res = await client.addToWhitelist({
+      const res = await sponsorClient.addToWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.ContractMethodSigWhitelist,
         Values: [CONTRACT_METHOD],
@@ -76,7 +76,7 @@ describe('sponsorQuery', () => {
    */
   describe('getWhitelist', () => {
     test('should retrieve contract method signatures successfully', async () => {
-      const res = await client.getWhitelist({
+      const res = await sponsorClient.getWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.ContractMethodSigWhitelist,
         Offset: 0,
@@ -93,7 +93,7 @@ describe('sponsorQuery', () => {
    */
   describe('removeFromWhitelist', () => {
     test('should remove an account address from FromAccountWhitelist successfully', async () => {
-      const res = await client.removeFromWhitelist({
+      const res = await sponsorClient.removeFromWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.FromAccountWhitelist,
         Values: [ACCOUNT_ADDRESS],
@@ -109,7 +109,7 @@ describe('sponsorQuery', () => {
    */
   describe('getWhitelist', () => {
     test('should not contain account address post-removal', async () => {
-      const res = await client.getWhitelist({
+      const res = await sponsorClient.getWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.FromAccountWhitelist,
         Offset: 0,
@@ -127,7 +127,7 @@ describe('sponsorQuery', () => {
    */
   describe('emptyWhitelist', () => {
     test('should clear all entries from BEP20ReceiverWhiteList successfully', async () => {
-      const res = await client.emptyWhitelist({
+      const res = await sponsorClient.emptyWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.BEP20ReceiverWhiteList,
       })
@@ -142,7 +142,7 @@ describe('sponsorQuery', () => {
    */
   describe('getWhitelist', () => {
     test('should confirm the whitelist is empty', async () => {
-      const res = await client.getWhitelist({
+      const res = await sponsorClient.getWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.BEP20ReceiverWhiteList,
         Offset: 0,
@@ -159,7 +159,7 @@ describe('sponsorQuery', () => {
    */
   describe('getUserSpendData', () => {
     test('should return null for spend data when user has none', async () => {
-      const res = await client.getUserSpendData(ACCOUNT_ADDRESS, POLICY_UUID)
+      const res = await sponsorClient.getUserSpendData(ACCOUNT_ADDRESS, POLICY_UUID)
 
       expect(res).toBeNull()
       console.log('User spend data:', res)
@@ -171,7 +171,7 @@ describe('sponsorQuery', () => {
    */
   describe('getPolicySpendData', () => {
     test('should retrieve policy spend data successfully', async () => {
-      const res = await client.getPolicySpendData(POLICY_UUID)
+      const res = await sponsorClient.getPolicySpendData(POLICY_UUID)
       expect(res.ChainID).not.toBeNull()
       console.log('Policy spend data:', res)
     })
@@ -182,7 +182,7 @@ describe('sponsorQuery', () => {
    */
   describe('addToWhitelist FromAccountWhitelist', () => {
     test('should re-add an account address to FromAccountWhitelist successfully after removal', async () => {
-      const res = await client.addToWhitelist({
+      const res = await sponsorClient.addToWhitelist({
         PolicyUUID: POLICY_UUID,
         WhitelistType: WhitelistType.FromAccountWhitelist,
         Values: [ACCOUNT_ADDRESS],
