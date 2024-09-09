@@ -12,7 +12,7 @@ import {ethers} from 'ethers'
 
 export const client = new SponsorClient(SPONSOR_URL, undefined, {staticNetwork: ethers.Network.from(Number(CHAIN_ID))})
 
-// Provider for assembling the transaction (e.g., mainnet)
+// Provider for assembling the transaction (e.g., testnet)
 export const assemblyProvider = new ethers.JsonRpcProvider(CHAIN_URL)
 
 // Provider for sending the transaction (e.g., could be a different network or provider)

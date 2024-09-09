@@ -33,7 +33,7 @@ describe('paymasterQuery', () => {
   describe('isSponsorable', () => {
     test('should successfully determine if transaction is sponsorable', async () => {
       const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, wallet)
-      const tokenAmount = ethers.parseUnits('1.0', 18)
+      const tokenAmount = ethers.parseUnits('0', 18)
       const nonce = await paymasterProvider.getTransactionCount(wallet.address, 'pending')
 
       const transaction = await tokenContract.transfer.populateTransaction(RECIPIENT_ADDRESS.toLowerCase(), tokenAmount)
