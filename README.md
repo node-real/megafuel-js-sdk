@@ -1,6 +1,6 @@
 # megafuel-js-sdk
 
-This JavaScript SDK is thin wrapper of MegaFuel clients, offering a streamlined interface to interact with the MegaFuel. For more information, please refer to the [API documentation](https://docs.nodereal.io/docs/megafuel-api).
+This JavaScript SDK is thin wrapper of MegaFuel clients, offering a streamlined interface to interact with the MegaFuel. For more information, please refer to the [API documentation](https://docs.nodereal.io/reference/pm-issponsorable).
 
 ## Network Endpoint
 
