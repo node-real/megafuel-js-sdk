@@ -4,12 +4,12 @@ This JavaScript SDK is thin wrapper of MegaFuel clients, offering a streamlined 
 
 ## Network Endpoint
 
-|    Network    |        [Paymaster]( https://docs.nodereal.io/reference/pm-issponsorable)        |                [Sponsor](https://docs.nodereal.io/reference/pm-addtowhitelist)                 |
-|:-------------:|:-------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|
-|  BSC mainnet  |                        https://bsc-megafuel.nodereal.io                         |                   https://open-platform.nodereal.io/{YOUR_API_KEY}/megafuel                    |
-|  BSC testnet  |                    https://bsc-megafuel-testnet.nodereal.io                     |               https://open-platform.nodereal.io/{YOUR_API_KEY}/megafuel-testnet                |
-| opBNB mainnet |                       https://opbnb-megafuel.nodereal.io                        |                   https://open-platform.nodereal.io/{YOUR_API_KEY}/megafuel                    |
-| opBNB testnet |                   https://opbnb-megafuel-testnet.nodereal.io                    |               https://open-platform.nodereal.io/{YOUR_API_KEY}/megafuel-testnet                |
+|    Network    |        [Paymaster]( https://docs.nodereal.io/reference/pm-issponsorable)        |   [Sponsor](https://docs.nodereal.io/reference/pm-addtowhitelist)    |
+|:-------------:|:-------------------------------------------------------------------------------:|:--------------------------------------------------------------------:|
+|  BSC mainnet  |                        https://bsc-megafuel.nodereal.io                         |     https://open-platform-ap.nodereal.io/{YOUR_API_KEY}/megafuel     |
+|  BSC testnet  |                    https://bsc-megafuel-testnet.nodereal.io                     | https://open-platform-ap.nodereal.io/{YOUR_API_KEY}/megafuel-testnet |
+| opBNB mainnet |                       https://opbnb-megafuel.nodereal.io                        |     https://open-platform-ap.nodereal.io/{YOUR_API_KEY}/megafuel     |
+| opBNB testnet |                   https://opbnb-megafuel-testnet.nodereal.io                    | https://open-platform-ap.nodereal.io/{YOUR_API_KEY}/megafuel-testnet |
 
 ## Quick Start
 1. Install dependency
@@ -25,7 +25,7 @@ import {ethers} from "ethers";
 import {PaymasterClient, SponsorClient} from 'megafuel-js-sdk';
 
 const PAYMASTER_URL = "https://bsc-megafuel.nodereal.io"
-const SPONSOR_URL = "https://open-platform.nodereal.io/{YOUR_API_KEY}/megafuel"
+const SPONSOR_URL = "https://open-platform-ap.nodereal.io/{YOUR_API_KEY}/megafuel"
 
 const POLICY_UUID = "a2381160-xxxx-xxxx-xxxxceca86556834"
 const TOKEN_CONTRACT_ADDRESS = "0xeD2.....12Ee"
