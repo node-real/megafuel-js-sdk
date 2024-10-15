@@ -133,7 +133,8 @@ describe('paymasterQuery', () => {
         expect(res.Sponsorable).toEqual(true)
   
         const txOpt: SendRawTransactionOptions = {
-          PrivatePolicyUUID: PRIVATE_POLICY_UUID
+          PrivatePolicyUUID: PRIVATE_POLICY_UUID,
+          UserAgent: "TEST USER AGENT"
         };
 
         const signedTx = await wallet.signTransaction(safeTransaction)

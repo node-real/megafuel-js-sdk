@@ -15,6 +15,7 @@ export type IsSponsorableOptions = {
 
 export type SendRawTransactionOptions = {
   PrivatePolicyUUID?: string
+  UserAgent?: string
 }
 
 export enum GaslessTransactionStatus { New = 0, Pending = 1, Confirmed = 2, Failed = 3, Invalid = 4}
@@ -74,20 +75,58 @@ export class PaymasterClient {
     return await this.userClient.send('eth_chainId', [])
   }
 
-  async isSponsorable(tx: TransactionRequest, opts: IsSponsorableOptions = {} ): Promise<IsSponsorableResponse> {
+  async isSponsorable(tx: TransactionRequest, opts: IsSponsorableOptions = {}): Promise<IsSponsorableResponse> {
     if (opts.PrivatePolicyUUID) {
-      this.sponsorClient._getConnection().setHeader("X-MegaFuel-Policy-Uuid", opts.PrivatePolicyUUID)
-      return await this.sponsorClient.send('pm_isSponsorable', [tx])
+      // Create a new provider with the updated header
+      const newConnection = this.sponsorClient._getConnection();
+      newConnection.setHeader("X-MegaFuel-Policy-Uuid", opts.PrivatePolicyUUID);
+  
+      // Create a new provider with the modified connection
+      const sponsorProviderWithHeader = new ethers.JsonRpcProvider(
+        newConnection,
+        (this.sponsorClient as any)._network,
+        {
+          staticNetwork: (this.sponsorClient as any)._network,
+          batchMaxCount: (this.sponsorClient as any).batchMaxCount,
+          polling: (this.sponsorClient as any).polling
+        }
+      );
+  
+      return await sponsorProviderWithHeader.send('pm_isSponsorable', [tx]);
     }
-    return await this.userClient.send('pm_isSponsorable', [tx])
+    return await this.userClient.send('pm_isSponsorable', [tx]);
   }
 
-  async sendRawTransaction(signedTx: string, opts: SendRawTransactionOptions= {}): Promise<string> {
-    if (opts.PrivatePolicyUUID) {
-      this.sponsorClient._getConnection().setHeader("X-MegaFuel-Policy-Uuid", opts.PrivatePolicyUUID)
-      return await this.sponsorClient.send('eth_sendRawTransaction', [signedTx])
+  async sendRawTransaction(signedTx: string, opts: SendRawTransactionOptions = {}): Promise<string> {
+    let sponsorProvider = this.sponsorClient;
+  
+    if (opts.UserAgent || opts.PrivatePolicyUUID) {
+      // Create a new provider with the updated headers
+      const newConnection = this.sponsorClient._getConnection();
+      
+      if (opts.UserAgent) {
+        newConnection.setHeader("User-Agent", opts.UserAgent);
+      }
+      if (opts.PrivatePolicyUUID) {
+        newConnection.setHeader("X-MegaFuel-Policy-Uuid", opts.PrivatePolicyUUID);
+      }
+  
+      // Create a new provider with the modified connection
+      sponsorProvider = new ethers.JsonRpcProvider(
+        newConnection,
+        (this.sponsorClient as any)._network,
+        {
+          staticNetwork: (this.sponsorClient as any)._network,
+          batchMaxCount: (this.sponsorClient as any).batchMaxCount,
+          polling: (this.sponsorClient as any).polling
+        }
+      );
     }
-    return await this.userClient.send('eth_sendRawTransaction', [signedTx])
+  
+    if (opts.PrivatePolicyUUID) {
+      return await sponsorProvider.send('eth_sendRawTransaction', [signedTx]);
+    }
+    return await this.userClient.send('eth_sendRawTransaction', [signedTx]);
   }
 
   async getGaslessTransactionByHash(hash: string): Promise<GaslessTransaction> {

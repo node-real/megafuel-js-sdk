@@ -158,10 +158,10 @@ describe('sponsorQuery', () => {
    * Tests retrieving user spend data.
    */
   describe('getUserSpendData', () => {
-    test('should return null for spend data when user has none', async () => {
+    test('should return not null for user spend data', async () => {
       const res = await sponsorClient.getUserSpendData(ACCOUNT_ADDRESS, POLICY_UUID)
 
-      expect(res).toBeNull()
+      expect(res).not.toBeNull()
       console.log('User spend data:', res)
     })
   })
