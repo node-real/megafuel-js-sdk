@@ -16,7 +16,7 @@ export const sponsorClient = new SponsorClient(SPONSOR_URL, undefined, {staticNe
 export const assemblyProvider = new ethers.JsonRpcProvider(CHAIN_URL)
 
 // Provider for sending the transaction (e.g., could be a different network or provider)
-export const paymasterClient = new PaymasterClient(PAYMASTER_URL)
+export const paymasterClient = new PaymasterClient(PAYMASTER_URL,SPONSOR_URL+"/"+CHAIN_ID, undefined, {staticNetwork: ethers.Network.from(Number(CHAIN_ID))})
 
 export const wallet = new ethers.Wallet(PRIVATE_KEY, assemblyProvider)
 // ERC20 token ABI (only including the transfer function)
