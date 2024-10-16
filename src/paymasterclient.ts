@@ -58,17 +58,31 @@ export type Bundle = {
 }
 
 export class PaymasterClient {
-  private sponsorClient: ethers.JsonRpcProvider
   private userClient: ethers.JsonRpcProvider
+  private sponsorClient?: ethers.JsonRpcProvider
 
+  /**
+   * Creates a new PaymasterClient with an optional sponsorUrl.
+   * If sponsorUrl is provided, it enables the use of private policies.
+   * The sponsorUrl is typically in the format: "https://open-platform-ap.nodereal.io/xxxx/megafuel-testnet"
+   * IsSponsorableOptions.PrivatePolicyUUID and SendRawTransactionOptions.PrivatePolicyUUID 
+   * can only be used when sponsorUrl is provided.
+   * 
+   * @param userUrl The URL for the user's JsonRpcProvider
+   * @param sponsorUrl Optional URL for the sponsor's JsonRpcProvider
+   * @param network Optional network information
+   * @param options Optional JsonRpcApiProviderOptions
+   */
   constructor(
     userUrl: string | FetchRequest,
-    sponsorUrl: string | FetchRequest,
+    sponsorUrl?: string | FetchRequest,
     network?: Networkish,
     options?: JsonRpcApiProviderOptions
   ) {
     this.userClient = new ethers.JsonRpcProvider(userUrl, network, options)
-    this.sponsorClient = new ethers.JsonRpcProvider(sponsorUrl, network, options)
+    if (sponsorUrl) {
+      this.sponsorClient = new ethers.JsonRpcProvider(sponsorUrl, network, options)
+    }
   }
 
   async chainID(): Promise<string> {
@@ -76,12 +90,10 @@ export class PaymasterClient {
   }
 
   async isSponsorable(tx: TransactionRequest, opts: IsSponsorableOptions = {}): Promise<IsSponsorableResponse> {
-    if (opts.PrivatePolicyUUID) {
-      // Create a new provider with the updated header
+    if (this.sponsorClient && opts.PrivatePolicyUUID) {
       const newConnection = this.sponsorClient._getConnection();
       newConnection.setHeader("X-MegaFuel-Policy-Uuid", opts.PrivatePolicyUUID);
   
-      // Create a new provider with the modified connection
       const sponsorProviderWithHeader = new ethers.JsonRpcProvider(
         newConnection,
         (this.sponsorClient as any)._network,
@@ -98,10 +110,7 @@ export class PaymasterClient {
   }
 
   async sendRawTransaction(signedTx: string, opts: SendRawTransactionOptions = {}): Promise<string> {
-    let sponsorProvider = this.sponsorClient;
-  
-    if (opts.UserAgent || opts.PrivatePolicyUUID) {
-      // Create a new provider with the updated headers
+    if (this.sponsorClient && (opts.UserAgent || opts.PrivatePolicyUUID)) {
       const newConnection = this.sponsorClient._getConnection();
       
       if (opts.UserAgent) {
@@ -111,8 +120,7 @@ export class PaymasterClient {
         newConnection.setHeader("X-MegaFuel-Policy-Uuid", opts.PrivatePolicyUUID);
       }
   
-      // Create a new provider with the modified connection
-      sponsorProvider = new ethers.JsonRpcProvider(
+      const sponsorProvider = new ethers.JsonRpcProvider(
         newConnection,
         (this.sponsorClient as any)._network,
         {
@@ -121,10 +129,10 @@ export class PaymasterClient {
           polling: (this.sponsorClient as any).polling
         }
       );
-    }
   
-    if (opts.PrivatePolicyUUID) {
-      return await sponsorProvider.send('eth_sendRawTransaction', [signedTx]);
+      if (opts.PrivatePolicyUUID) {
+        return await sponsorProvider.send('eth_sendRawTransaction', [signedTx]);
+      }
     }
     return await this.userClient.send('eth_sendRawTransaction', [signedTx]);
   }
@@ -145,7 +153,7 @@ export class PaymasterClient {
     return await this.userClient.send('pm_getBundleByUuid', [bundleUuid])
   }
 
-  getSponsorProvider(): ethers.JsonRpcProvider {
+  getSponsorProvider(): ethers.JsonRpcProvider | undefined {
     return this.sponsorClient
   }
 
