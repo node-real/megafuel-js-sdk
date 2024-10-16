@@ -9,12 +9,7 @@ export type IsSponsorableResponse = {
   SponsorWebsite: string
 }
 
-export type IsSponsorableOptions = {
-  PrivatePolicyUUID?: string
-}
-
 export type SendRawTransactionOptions = {
-  PrivatePolicyUUID?: string
   UserAgent?: string
 }
 
@@ -58,19 +53,46 @@ export type Bundle = {
 }
 
 export class PaymasterClient extends ethers.JsonRpcProvider {
-  constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions) {
+  private privatePolicyUUID?: string
+
+  private constructor(
+    url?: string | FetchRequest,
+    network?: Networkish,
+    options?: JsonRpcApiProviderOptions,
+    privatePolicyUUID?: string
+  ) {
     super(url, network, options)
+    this.privatePolicyUUID = privatePolicyUUID
+  }
+
+  // Static method to create a new standard PaymasterClient
+  static new(
+    url?: string | FetchRequest,
+    network?: Networkish,
+    options?: JsonRpcApiProviderOptions
+  ): PaymasterClient {
+    return new PaymasterClient(url, network, options)
+  }
+
+  // Static method to create a new PaymasterClient with private policy
+  static newPrivatePaymaster(
+    url: string | FetchRequest,
+    privatePolicyUUID: string,
+    network?: Networkish,
+    options?: JsonRpcApiProviderOptions
+  ): PaymasterClient {
+    return new PaymasterClient(url, network, options, privatePolicyUUID)
   }
 
   async chainID(): Promise<string> {
     return await this.send('eth_chainId', [])
   }
 
-  async isSponsorable(tx: TransactionRequest, opts: IsSponsorableOptions = {}): Promise<IsSponsorableResponse> {
-    if (opts.PrivatePolicyUUID) {
-      const newConnection = this._getConnection();
-      newConnection.setHeader("X-MegaFuel-Policy-Uuid", opts.PrivatePolicyUUID);
-  
+  async isSponsorable(tx: TransactionRequest): Promise<IsSponsorableResponse> {
+    const policyUUID = this.privatePolicyUUID
+    if (policyUUID) {
+      const newConnection = this._getConnection()
+      newConnection.setHeader("X-MegaFuel-Policy-Uuid", policyUUID)
       const sponsorProviderWithHeader = new ethers.JsonRpcProvider(
         newConnection,
         (this as any)._network,
@@ -79,24 +101,24 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
           batchMaxCount: (this as any).batchMaxCount,
           polling: (this as any).polling
         }
-      );
-  
-      return await sponsorProviderWithHeader.send('pm_isSponsorable', [tx]);
+      )
+      return await sponsorProviderWithHeader.send('pm_isSponsorable', [tx])
     }
-    return await this.send('pm_isSponsorable', [tx]);
+    return await this.send('pm_isSponsorable', [tx])
   }
 
   async sendRawTransaction(signedTx: string, opts: SendRawTransactionOptions = {}): Promise<string> {
-    if (opts.UserAgent || opts.PrivatePolicyUUID) {
-      const newConnection = this._getConnection();
+    const policyUUID = this.privatePolicyUUID
+    if (opts.UserAgent || this.privatePolicyUUID) {
+      const newConnection = this._getConnection()
       
       if (opts.UserAgent) {
-        newConnection.setHeader("User-Agent", opts.UserAgent);
+        newConnection.setHeader("User-Agent", opts.UserAgent)
       }
-      if (opts.PrivatePolicyUUID) {
-        newConnection.setHeader("X-MegaFuel-Policy-Uuid", opts.PrivatePolicyUUID);
+      if (policyUUID) {
+        newConnection.setHeader("X-MegaFuel-Policy-Uuid", policyUUID)
       }
-  
+      
       const sponsorProvider = new ethers.JsonRpcProvider(
         newConnection,
         (this as any)._network,
@@ -105,13 +127,13 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
           batchMaxCount: (this as any).batchMaxCount,
           polling: (this as any).polling
         }
-      );
-  
-      if (opts.PrivatePolicyUUID) {
-        return await sponsorProvider.send('eth_sendRawTransaction', [signedTx]);
+      )
+      
+      if (policyUUID) {
+        return await sponsorProvider.send('eth_sendRawTransaction', [signedTx])
       }
     }
-    return await this.send('eth_sendRawTransaction', [signedTx]);
+    return await this.send('eth_sendRawTransaction', [signedTx])
   }
 
   async getGaslessTransactionByHash(hash: string): Promise<GaslessTransaction> {

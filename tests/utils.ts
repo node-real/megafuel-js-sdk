@@ -7,8 +7,9 @@ import {
   Bundle,
   GaslessTransactionStatus,
 } from '../src'
-import {CHAIN_ID, SPONSOR_URL, CHAIN_URL, PAYMASTER_URL, PRIVATE_KEY, TOKEN_CONTRACT_ADDRESS} from './env'
+import {CHAIN_ID, SPONSOR_URL, CHAIN_URL, PAYMASTER_URL, PRIVATE_KEY, TOKEN_CONTRACT_ADDRESS, PRIVATE_POLICY_UUID} from './env'
 import {ethers} from 'ethers'
+
 
 export const sponsorClient = new SponsorClient(SPONSOR_URL+"/"+CHAIN_ID, undefined, {staticNetwork: ethers.Network.from(Number(CHAIN_ID))})
 
@@ -16,7 +17,8 @@ export const sponsorClient = new SponsorClient(SPONSOR_URL+"/"+CHAIN_ID, undefin
 export const assemblyProvider = new ethers.JsonRpcProvider(CHAIN_URL)
 
 // Provider for sending the transaction (e.g., could be a different network or provider)
-export const paymasterClient = new PaymasterClient(PAYMASTER_URL, undefined, {staticNetwork: ethers.Network.from(Number(CHAIN_ID))})
+export const paymasterClient = PaymasterClient.new(PAYMASTER_URL, undefined, {staticNetwork: ethers.Network.from(Number(CHAIN_ID))})
+export const privatePaymasterClient = PaymasterClient.newPrivatePaymaster(SPONSOR_URL+"/"+CHAIN_ID, PRIVATE_POLICY_UUID, undefined, {staticNetwork: ethers.Network.from(Number(CHAIN_ID))})
 
 export const wallet = new ethers.Wallet(PRIVATE_KEY, assemblyProvider)
 // ERC20 token ABI (only including the transfer function)
