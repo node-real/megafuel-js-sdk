@@ -7,8 +7,7 @@ import {
   transformToGaslessTransaction,
   delay, transformSponsorTxResponse, transformBundleResponse,
 } from './utils'
-import {IsSponsorableOptions, SendRawTransactionOptions} from '../src/paymasterclient'
-import {TOKEN_CONTRACT_ADDRESS, CHAIN_ID, RECIPIENT_ADDRESS, PRIVATE_POLICY_UUID} from './env'
+import {TOKEN_CONTRACT_ADDRESS, CHAIN_ID, RECIPIENT_ADDRESS} from './env'
 import {ethers} from 'ethers'
 
 let TX_HASH = ''
@@ -35,7 +34,7 @@ describe('paymasterQuery', () => {
     test('should successfully determine if transaction is sponsorable', async () => {
       const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, wallet)
       const tokenAmount = ethers.parseUnits('0', 18)
-      const nonce = await paymasterClient.getUserProvider().getTransactionCount(wallet.address, 'pending')
+      const nonce = await paymasterClient.getTransactionCount(wallet.address, 'pending')
 
       const transaction = await tokenContract.transfer.populateTransaction(RECIPIENT_ADDRESS.toLowerCase(), tokenAmount)
       transaction.from = wallet.address
@@ -97,54 +96,4 @@ describe('paymasterQuery', () => {
       expect(sponsorTx.TxHash).toEqual(tx.TxHash)
     }, 13000)
   })
-
-
-    /**
-   * Test for checking if a private policy transaction is sponsorable.
-   */
-    describe('isSponsorable', () => {
-      test('should successfully determine if transaction is sponsorable', async () => {
-        const tokenContract = new ethers.Contract(TOKEN_CONTRACT_ADDRESS, tokenAbi, wallet)
-        const tokenAmount = ethers.parseUnits('0', 18)
-        const nonce = await paymasterClient.getUserProvider().getTransactionCount(wallet.address, 'pending')
-  
-        const transaction = await tokenContract.transfer.populateTransaction(RECIPIENT_ADDRESS.toLowerCase(), tokenAmount)
-        transaction.from = wallet.address
-        transaction.nonce = nonce
-        transaction.gasLimit = BigInt(100000)
-        transaction.chainId = BigInt(CHAIN_ID)
-        transaction.gasPrice = BigInt(0)
-  
-        const safeTransaction = {
-          ...transaction,
-          gasLimit: transaction.gasLimit.toString(),
-          chainId: transaction.chainId.toString(),
-          gasPrice: transaction.gasPrice.toString(),
-        }
-  
-        console.log('Prepared transaction:', safeTransaction)
-
-        const opt: IsSponsorableOptions = {
-          PrivatePolicyUUID: PRIVATE_POLICY_UUID
-        };
-
-        const resRaw = await paymasterClient.isSponsorable(safeTransaction, opt)
-        const res = transformIsSponsorableResponse(resRaw)
-        expect(res.Sponsorable).toEqual(true)
-  
-        const txOpt: SendRawTransactionOptions = {
-          PrivatePolicyUUID: PRIVATE_POLICY_UUID,
-          UserAgent: "TEST USER AGENT"
-        };
-
-        const signedTx = await wallet.signTransaction(safeTransaction)
-        try {
-          const tx = await paymasterClient.sendRawTransaction(signedTx,txOpt)
-          TX_HASH = tx
-          console.log('Transaction hash received:', TX_HASH)
-        } catch (error) {
-          console.error('Transaction failed:', error)
-        }
-      }, 100000) // Extends the default timeout as this test involves network calls
-    })
 })
