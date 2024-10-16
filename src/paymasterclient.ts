@@ -93,7 +93,7 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
     if (policyUUID) {
       const newConnection = this._getConnection()
       newConnection.setHeader("X-MegaFuel-Policy-Uuid", policyUUID)
-      const sponsorProviderWithHeader = new ethers.JsonRpcProvider(
+      const provider = new ethers.JsonRpcProvider(
         newConnection,
         (this as any)._network,
         {
@@ -102,7 +102,7 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
           polling: (this as any).polling
         }
       )
-      return await sponsorProviderWithHeader.send('pm_isSponsorable', [tx])
+      return await provider.send('pm_isSponsorable', [tx])
     }
     return await this.send('pm_isSponsorable', [tx])
   }
@@ -119,7 +119,7 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
         newConnection.setHeader("X-MegaFuel-Policy-Uuid", policyUUID)
       }
       
-      const sponsorProvider = new ethers.JsonRpcProvider(
+      const provider = new ethers.JsonRpcProvider(
         newConnection,
         (this as any)._network,
         {
@@ -128,10 +128,8 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
           polling: (this as any).polling
         }
       )
-      
-      if (policyUUID) {
-        return await sponsorProvider.send('eth_sendRawTransaction', [signedTx])
-      }
+
+      return await provider.send('eth_sendRawTransaction', [signedTx])
     }
     return await this.send('eth_sendRawTransaction', [signedTx])
   }
