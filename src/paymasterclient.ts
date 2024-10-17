@@ -10,7 +10,7 @@ export type IsSponsorableResponse = {
 }
 
 export type SendRawTransactionOptions = {
-  UserAgent?: string
+  WalletToTrace?: string
 }
 
 export enum GaslessTransactionStatus { New = 0, Pending = 1, Confirmed = 2, Failed = 3, Invalid = 4}
@@ -109,11 +109,11 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
 
   async sendRawTransaction(signedTx: string, opts: SendRawTransactionOptions = {}): Promise<string> {
     const policyUUID = this.privatePolicyUUID
-    if (opts.UserAgent || this.privatePolicyUUID) {
+    if (opts.WalletToTrace || this.privatePolicyUUID) {
       const newConnection = this._getConnection()
       
-      if (opts.UserAgent) {
-        newConnection.setHeader("User-Agent", opts.UserAgent)
+      if (opts.WalletToTrace) {
+        newConnection.setHeader("User-Agent", opts.WalletToTrace)
       }
       if (policyUUID) {
         newConnection.setHeader("X-MegaFuel-Policy-Uuid", policyUUID)
