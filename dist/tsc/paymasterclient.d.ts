@@ -7,6 +7,9 @@ export type IsSponsorableResponse = {
     SponsorIcon: string;
     SponsorWebsite: string;
 };
+export type SendRawTransactionOptions = {
+    UserAgent?: string;
+};
 export declare enum GaslessTransactionStatus {
     New = 0,
     Pending = 1,
@@ -49,10 +52,13 @@ export type Bundle = {
     readonly ChainID: number;
 };
 export declare class PaymasterClient extends ethers.JsonRpcProvider {
-    constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions);
+    private privatePolicyUUID?;
+    private constructor();
+    static new(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions): PaymasterClient;
+    static newPrivatePaymaster(url: string | FetchRequest, privatePolicyUUID: string, network?: Networkish, options?: JsonRpcApiProviderOptions): PaymasterClient;
     chainID(): Promise<string>;
     isSponsorable(tx: TransactionRequest): Promise<IsSponsorableResponse>;
-    sendRawTransaction(signedTx: string): Promise<string>;
+    sendRawTransaction(signedTx: string, opts?: SendRawTransactionOptions): Promise<string>;
     getGaslessTransactionByHash(hash: string): Promise<GaslessTransaction>;
     getSponsorTxByTxHash(hash: string): Promise<SponsorTx>;
     getSponsorTxByBundleUuid(bundleUuid: string): Promise<SponsorTx>;

@@ -12,8 +12,17 @@ var GaslessTransactionStatus;
     GaslessTransactionStatus[GaslessTransactionStatus["Invalid"] = 4] = "Invalid";
 })(GaslessTransactionStatus = exports.GaslessTransactionStatus || (exports.GaslessTransactionStatus = {}));
 class PaymasterClient extends ethers_1.ethers.JsonRpcProvider {
-    constructor(url, network, options) {
+    constructor(url, network, options, privatePolicyUUID) {
         super(url, network, options);
+        this.privatePolicyUUID = privatePolicyUUID;
+    }
+    // Static method to create a new standard PaymasterClient
+    static new(url, network, options) {
+        return new PaymasterClient(url, network, options);
+    }
+    // Static method to create a new PaymasterClient with private policy
+    static newPrivatePaymaster(url, privatePolicyUUID, network, options) {
+        return new PaymasterClient(url, network, options, privatePolicyUUID);
     }
     chainID() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -22,11 +31,38 @@ class PaymasterClient extends ethers_1.ethers.JsonRpcProvider {
     }
     isSponsorable(tx) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const policyUUID = this.privatePolicyUUID;
+            if (policyUUID) {
+                const newConnection = this._getConnection();
+                newConnection.setHeader("X-MegaFuel-Policy-Uuid", policyUUID);
+                const provider = new ethers_1.ethers.JsonRpcProvider(newConnection, this._network, {
+                    staticNetwork: this._network,
+                    batchMaxCount: this.batchMaxCount,
+                    polling: this.polling
+                });
+                return yield provider.send('pm_isSponsorable', [tx]);
+            }
             return yield this.send('pm_isSponsorable', [tx]);
         });
     }
-    sendRawTransaction(signedTx) {
+    sendRawTransaction(signedTx, opts = {}) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const policyUUID = this.privatePolicyUUID;
+            if (opts.UserAgent || this.privatePolicyUUID) {
+                const newConnection = this._getConnection();
+                if (opts.UserAgent) {
+                    newConnection.setHeader("User-Agent", opts.UserAgent);
+                }
+                if (policyUUID) {
+                    newConnection.setHeader("X-MegaFuel-Policy-Uuid", policyUUID);
+                }
+                const provider = new ethers_1.ethers.JsonRpcProvider(newConnection, this._network, {
+                    staticNetwork: this._network,
+                    batchMaxCount: this.batchMaxCount,
+                    polling: this.polling
+                });
+                return yield provider.send('eth_sendRawTransaction', [signedTx]);
+            }
             return yield this.send('eth_sendRawTransaction', [signedTx]);
         });
     }
