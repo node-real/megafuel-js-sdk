@@ -11,14 +11,14 @@ import {CHAIN_ID, SPONSOR_URL, CHAIN_URL, PAYMASTER_URL, PRIVATE_KEY, TOKEN_CONT
 import {ethers} from 'ethers'
 
 
-export const sponsorClient = new SponsorClient(SPONSOR_URL+"/"+CHAIN_ID, undefined, {staticNetwork: ethers.Network.from(Number(CHAIN_ID))})
+export const sponsorClient = new SponsorClient(SPONSOR_URL)
 
 // Provider for assembling the transaction (e.g., testnet)
 export const assemblyProvider = new ethers.JsonRpcProvider(CHAIN_URL)
 
 // Provider for sending the transaction (e.g., could be a different network or provider)
-export const paymasterClient = PaymasterClient.new(PAYMASTER_URL, undefined, {staticNetwork: ethers.Network.from(Number(CHAIN_ID))})
-export const privatePaymasterClient = PaymasterClient.newPrivatePaymaster(SPONSOR_URL+"/"+CHAIN_ID, PRIVATE_POLICY_UUID, undefined, {staticNetwork: ethers.Network.from(Number(CHAIN_ID))})
+export const paymasterClient = PaymasterClient.new(PAYMASTER_URL)
+export const privatePaymasterClient = PaymasterClient.newPrivatePaymaster(SPONSOR_URL, PRIVATE_POLICY_UUID)
 
 export const wallet = new ethers.Wallet(PRIVATE_KEY, assemblyProvider)
 // ERC20 token ABI (only including the transfer function)

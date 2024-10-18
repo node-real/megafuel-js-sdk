@@ -12,7 +12,7 @@ var WhitelistType;
 })(WhitelistType = exports.WhitelistType || (exports.WhitelistType = {}));
 class SponsorClient extends ethers_1.ethers.JsonRpcProvider {
     constructor(url, network, options) {
-        super(url, network, options);
+        super(url, network, { batchMaxCount: 1 });
     }
     addToWhitelist(params) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

@@ -6,7 +6,7 @@ dotenv.config({
 
 // testnet env
 export const OPEN_PLATFORM_PRIVATE_KEY = process.env.OPEN_PLATFORM_PRIVATE_KEY
-export const SPONSOR_URL = `https://open-platform-ap.nodereal.io/${OPEN_PLATFORM_PRIVATE_KEY}/megafuel-testnet`
+export const SPONSOR_URL = `https://open-platform-ap.nodereal.io/${OPEN_PLATFORM_PRIVATE_KEY}/megafuel-testnet/97`
 export const CHAIN_ID = '97'
 export const CHAIN_URL = `https://bsc-testnet.nodereal.io/v1/${OPEN_PLATFORM_PRIVATE_KEY}`
 export const PAYMASTER_URL = 'https://bsc-megafuel-testnet.nodereal.io/97'
