@@ -8,7 +8,7 @@ export type IsSponsorableResponse = {
     SponsorWebsite: string;
 };
 export type SendRawTransactionOptions = {
-    UserAgent?: string;
+    WalletToTrace?: string;
 };
 export declare enum GaslessTransactionStatus {
     New = 0,

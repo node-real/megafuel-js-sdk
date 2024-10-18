@@ -48,10 +48,10 @@ class PaymasterClient extends ethers_1.ethers.JsonRpcProvider {
     sendRawTransaction(signedTx, opts = {}) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const policyUUID = this.privatePolicyUUID;
-            if (opts.UserAgent || this.privatePolicyUUID) {
+            if (opts.WalletToTrace || this.privatePolicyUUID) {
                 const newConnection = this._getConnection();
-                if (opts.UserAgent) {
-                    newConnection.setHeader("User-Agent", opts.UserAgent);
+                if (opts.WalletToTrace) {
+                    newConnection.setHeader("User-Agent", opts.WalletToTrace);
                 }
                 if (policyUUID) {
                     newConnection.setHeader("X-MegaFuel-Policy-Uuid", policyUUID);
