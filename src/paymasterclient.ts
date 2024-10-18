@@ -71,7 +71,9 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
     network?: Networkish,
     options?: JsonRpcApiProviderOptions
   ): PaymasterClient {
-    return new PaymasterClient(url, network, {batchMaxCount: 1})
+    const defaultOptions = { batchMaxCount: 1 };
+    const mergedOptions = { ...defaultOptions, ...options };
+    return new PaymasterClient(url, network, mergedOptions);
   }
 
   // Static method to create a new PaymasterClient with private policy
@@ -81,7 +83,9 @@ export class PaymasterClient extends ethers.JsonRpcProvider {
     network?: Networkish,
     options?: JsonRpcApiProviderOptions
   ): PaymasterClient {
-    return new PaymasterClient(url, network, {batchMaxCount: 1}, privatePolicyUUID)
+    const defaultOptions = { batchMaxCount: 1 };
+    const mergedOptions = { ...defaultOptions, ...options };
+    return new PaymasterClient(url, network, mergedOptions, privatePolicyUUID);
   }
 
   async chainID(): Promise<string> {

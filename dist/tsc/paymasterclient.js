@@ -18,11 +18,15 @@ class PaymasterClient extends ethers_1.ethers.JsonRpcProvider {
     }
     // Static method to create a new standard PaymasterClient
     static new(url, network, options) {
-        return new PaymasterClient(url, network, { batchMaxCount: 1 });
+        const defaultOptions = { batchMaxCount: 1 };
+        const mergedOptions = Object.assign(Object.assign({}, defaultOptions), options);
+        return new PaymasterClient(url, network, mergedOptions);
     }
     // Static method to create a new PaymasterClient with private policy
     static newPrivatePaymaster(url, privatePolicyUUID, network, options) {
-        return new PaymasterClient(url, network, { batchMaxCount: 1 }, privatePolicyUUID);
+        const defaultOptions = { batchMaxCount: 1 };
+        const mergedOptions = Object.assign(Object.assign({}, defaultOptions), options);
+        return new PaymasterClient(url, network, mergedOptions, privatePolicyUUID);
     }
     chainID() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

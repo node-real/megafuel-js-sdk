@@ -44,7 +44,9 @@ export type PolicySpendData = {
 
 export class SponsorClient extends ethers.JsonRpcProvider {
   constructor(url?: string | FetchRequest, network?: Networkish, options?: JsonRpcApiProviderOptions) {
-    super(url, network, {batchMaxCount: 1})
+    const defaultOptions = { batchMaxCount: 1 };
+    const mergedOptions = { ...defaultOptions, ...options };
+    super(url, network, mergedOptions);
   }
 
   async addToWhitelist(params: WhitelistArgs): Promise<boolean> {
