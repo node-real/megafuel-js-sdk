@@ -22,7 +22,7 @@ This JavaScript SDK is thin wrapper of MegaFuel clients, offering a streamlined 
 ```js
 import 'dotenv/config';
 import {ethers} from "ethers";
-import {PaymasterClient, SponsorClient} from 'megafuel-js-sdk';
+import {PaymasterClient, SponsorClient, WhitelistType} from 'megafuel-js-sdk';
 
 const PAYMASTER_URL = "https://bsc-megafuel.nodereal.io"
 const SPONSOR_URL = "https://open-platform-ap.nodereal.io/{YOUR_API_KEY}/megafuel"
